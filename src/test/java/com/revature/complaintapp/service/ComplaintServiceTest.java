@@ -71,7 +71,7 @@ public class ComplaintServiceTest {
     public void testUpdate() {
 
         // initialize a complaint to insert:
-        Complaint complaint = new Complaint("This is a test", "UNREVIEWED", -1l);
+        Complaint complaint = new Complaint(1l, "This is a test", "UNREVIEWED", -1l);
         // creating the expected complaint object once it is inserted and an id is generated:
         Complaint updatedComplaint = new Complaint(1l, "This is a test", "UNREVIEWED", -1l);
 
