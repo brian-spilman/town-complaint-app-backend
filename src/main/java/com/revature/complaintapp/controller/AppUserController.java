@@ -56,6 +56,7 @@ public class AppUserController {
         for(AppUser user : userList){
             if(user.getUsername().equals(loginRequest.getUsername()) && user.getPassword().equals(loginRequest.getPassword())) {
                 logger1.info("Sign in success");
+                user.setPassword("");
                 return user;
             }
         }
