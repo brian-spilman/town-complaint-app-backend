@@ -1,6 +1,5 @@
 package com.revature.complaintapp.controller;
 
-import com.revature.complaintapp.entity.Complaint;
 import com.revature.complaintapp.entity.Meeting;
 import com.revature.complaintapp.service.MeetingService;
 import org.slf4j.Logger;
