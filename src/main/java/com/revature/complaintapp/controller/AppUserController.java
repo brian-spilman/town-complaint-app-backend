@@ -2,10 +2,12 @@ package com.revature.complaintapp.controller;
 
 import com.revature.complaintapp.dto.LoginRequest;
 import com.revature.complaintapp.entity.AppUser;
+import com.revature.complaintapp.exceptions.UserNotFoundException;
 import com.revature.complaintapp.service.AppUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +22,7 @@ public class AppUserController {
     Logger logger1 = LoggerFactory.getLogger(AppUserController.class);
 
     @PostMapping("/appusers")
+    @ResponseStatus(code = HttpStatus.CREATED)
     public AppUser insert(@RequestBody AppUser appUser) {
         logger1.info("Inserting: " + appUser.toString());
         return appUserService.insert(appUser);
@@ -50,7 +53,7 @@ public class AppUserController {
     }
 
     @PatchMapping("/login")
-    public AppUser login(@RequestBody LoginRequest loginRequest) {
+    public AppUser login(@RequestBody LoginRequest loginRequest) throws UserNotFoundException {
         logger1.info("Attempting login of username: " + loginRequest.getUsername());
         List<AppUser> userList = getAll();
         for(AppUser user : userList){
@@ -61,7 +64,7 @@ public class AppUserController {
             }
         }
         logger1.info("Sign In Failed");
-        return null;
+        throw new UserNotFoundException();
     }
 
 }

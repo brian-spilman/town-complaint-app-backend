@@ -1,6 +1,7 @@
 package com.revature.complaintapp.controller;
 
 import com.revature.complaintapp.entity.Meeting;
+import com.revature.complaintapp.exceptions.IdNotFoundException;
 import com.revature.complaintapp.service.MeetingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,19 +33,19 @@ public class MeetingController {
     }
 
     @GetMapping("/{meetingId}")
-    public Meeting getById(@PathVariable("meetingId") Long id) {
+    public Meeting getById(@PathVariable("meetingId") Long id) throws IdNotFoundException {
         logger1.info("Getting meeting of ID: " + id);
         return meetingService.getById(id);
     }
 
     @PutMapping()
-    public Meeting update(@RequestBody Meeting meeting) {
+    public Meeting update(@RequestBody Meeting meeting) throws IdNotFoundException {
         logger1.info("Updating: " + meeting.toString());
         return meetingService.update(meeting);
     }
 
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable("id") Long id) {
+    public boolean delete(@PathVariable("id") Long id) throws IdNotFoundException {
         logger1.info("Deleting meeting of ID: " + id);
         return meetingService.delete(id);
     }
