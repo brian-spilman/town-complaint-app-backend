@@ -1,6 +1,7 @@
 package com.revature.complaintapp.service;
 
 import com.revature.complaintapp.entity.Meeting;
+import com.revature.complaintapp.exceptions.IdNotFoundException;
 import com.revature.complaintapp.repository.MeetingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,17 +25,20 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public Meeting getById(Long id) {
+    public Meeting getById(Long id) throws IdNotFoundException {
+        if(!meetingRepository.existsById(id)) throw new IdNotFoundException();
         return meetingRepository.findById(id).get();
     }
 
     @Override
-    public Meeting update(Meeting meeting) {
+    public Meeting update(Meeting meeting) throws IdNotFoundException {
+        if(!meetingRepository.existsById(meeting.getMeeting_id())) throw new IdNotFoundException();
         return meetingRepository.save(meeting);
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean delete(Long id) throws IdNotFoundException {
+        if(!meetingRepository.existsById(id)) throw new IdNotFoundException();
         boolean found = meetingRepository.existsById(id);
         if(found) { meetingRepository.deleteById(id); }
         return found;
