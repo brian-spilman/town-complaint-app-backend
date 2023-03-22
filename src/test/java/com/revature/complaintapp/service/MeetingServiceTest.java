@@ -2,6 +2,7 @@ package com.revature.complaintapp.service;
 
 import com.revature.complaintapp.entity.Complaint;
 import com.revature.complaintapp.entity.Meeting;
+import com.revature.complaintapp.exceptions.IdNotFoundException;
 import com.revature.complaintapp.repository.ComplaintRepository;
 import com.revature.complaintapp.repository.MeetingRepository;
 import org.junit.jupiter.api.Assertions;
@@ -10,12 +11,14 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
+@TestPropertySource("classpath:test.properties")
 public class MeetingServiceTest {
 
     @MockBean(MeetingRepository.class)
@@ -34,7 +37,7 @@ public class MeetingServiceTest {
     }
 
     @Test
-    public void testGetById() {
+    public void testGetById() throws IdNotFoundException {
 
         Long meeting_id = 1l;
         Meeting expectedMeeting = new Meeting(1l, "TEST MEETING ADDRESS", 0l, "TEST MEETING");
@@ -59,7 +62,7 @@ public class MeetingServiceTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void testUpdate() throws IdNotFoundException {
 
         Meeting meeting = new Meeting(1l, "TEST MEETING ADDRESS", 0l, "TEST MEETING");
         Meeting updatedMeeting = new Meeting(1l, "TEST MEETING ADDRESS", 0l, "TEST MEETING");
@@ -70,7 +73,7 @@ public class MeetingServiceTest {
     }
 
     @Test
-    public void testDelete() {
+    public void testDelete() throws IdNotFoundException {
 
         Long meeting_id = 1l;
 
