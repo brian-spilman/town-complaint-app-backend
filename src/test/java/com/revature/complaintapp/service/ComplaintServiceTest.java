@@ -1,6 +1,7 @@
 package com.revature.complaintapp.service;
 
 import com.revature.complaintapp.entity.Complaint;
+import com.revature.complaintapp.exceptions.IdNotFoundException;
 import com.revature.complaintapp.repository.ComplaintRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 //
 @SpringBootTest
+@TestPropertySource("classpath:test.properties")
 public class ComplaintServiceTest {
 
     @MockBean(ComplaintRepository.class)
@@ -41,7 +44,7 @@ public class ComplaintServiceTest {
     }
 
     @Test
-    public void testGetById() {
+    public void testGetById() throws IdNotFoundException {
 
         // Complaint complaint = new Complaint("This is a test", "UNREVIEWED", -1l);
         Long complaint_id = 1l;
@@ -49,6 +52,7 @@ public class ComplaintServiceTest {
 
         // Optional<Complaint> = Optional.of(expectedComplaint);
         Mockito.when(complaintRepository.findById(complaint_id)).thenReturn(Optional.of(expectedComplaint));
+        Mockito.when(complaintRepository.existsById(complaint_id)).thenReturn(true);
 
         Assertions.assertEquals(expectedComplaint, complaintService.getById(complaint_id));
 
@@ -68,7 +72,7 @@ public class ComplaintServiceTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void testUpdate() throws IdNotFoundException {
 
         // initialize a complaint to insert:
         Complaint complaint = new Complaint(1l, "This is a test", "UNREVIEWED", -1l);
@@ -78,6 +82,7 @@ public class ComplaintServiceTest {
         // mock the save method of the repository, so the repository doesn't actually access the database
         // whenever the .save method is called, it will return the complaint object that we created in this test case
         Mockito.when(complaintRepository.save(complaint)).thenReturn(updatedComplaint);
+        Mockito.when(complaintRepository.existsById(complaint.getComplaint_id())).thenReturn(true);
 
         // ensure that the service returns the inserted complaint
         Assertions.assertEquals(updatedComplaint, complaintService.update(complaint));
